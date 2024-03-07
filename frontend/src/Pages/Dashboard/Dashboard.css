@@ -1,7 +1,20 @@
 /* Dashboard.css */
 
+body {
+  background-color: #C5EFFD; /* Adjusted background color for the entire page */
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard-container {
+  background-color: #D3EEF2; /* Adjusted background color outside the dashboard div */
+  padding: 20px;
+  height: ;
+}
+
 .dashboard {
   margin: 20px;
+  background-color: #D3EEF2
 }
 
 .widgets {
@@ -12,7 +25,7 @@
 
 .widget {
   width: calc(33.33% - 20px); /* Adjust as needed */
-  background-color: #f0f0f0;
+  background-color: #D3EEF2;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
