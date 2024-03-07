@@ -1,20 +1,17 @@
-/* Dashboard.css */
-
 body {
   background-color: #C5EFFD; /* Adjusted background color for the entire page */
   margin: 0;
   padding: 0;
 }
 
-.dashboard-container {
-  background-color: #D3EEF2; /* Adjusted background color outside the dashboard div */
-  padding: 20px;
-  height: ;
+.dashboard {
+  position: relative;
+  margin-top: -15%;
 }
 
-.dashboard {
+.graph {
   margin: 20px;
-  background-color: #D3EEF2
+  background-color: #D3EEF2;
 }
 
 .widgets {
@@ -32,10 +29,42 @@ body {
   margin-bottom: 20px;
 }
 
-.widget h2 {
-  margin-top: 0;
+.goal {
+  width: calc(33.33% - 40px); /* Adjust as needed */
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
-.widget p {
-  margin-bottom: 0;
+.current {
+  width: calc(33.33% - 40px); /* Adjust as needed */
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.widget-container {
+  display: flex;
+}
+
+.goal, .current {
+  flex: 1;
+}
+
+.topdec {
+  width: 100%;
+  height: 20%;
+  position: relative;
+  display: flex;
+}
+
+.heading {
+  font-size: 24px; /* Adjust the font size as needed */
+  text-decoration: underline; /* Add underline */
+  font-weight: bold;
+}
+
+.mrfresh{
+  position: absolute;
+  z-index: 1;
+  margin-left: 25%;
+  margin-top: -30%;
 }
