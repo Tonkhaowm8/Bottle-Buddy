@@ -6,8 +6,8 @@ import Profile from './Pages/Profile/Profile';
 const App = () => {
   return (
     <div className="App">
-      {/* <Dashboard /> */}
-      <Profile/>
+      <Dashboard />
+      {/* <Profile/> */}
     </div>
   );
 };

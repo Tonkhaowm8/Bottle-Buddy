@@ -1,20 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Dashboard.css';
 import topdec1 from '../../img/topdec1.png';
 import mrfresh from '../../img/mrfresh.png';
+import { fetchData } from '../../routes'; // Import fetchData function
 
 const Dashboard = () => {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchAndSetData = async () => {
+      const result = await fetchData();
+      setData(result);
+    };
+
+    fetchAndSetData();
+  }, []);
+
   return (
     <div className='body'>
       <img 
-      className='topdec'
-      src={topdec1}
-      alt="topdec"
+        className='topdec'
+        src={topdec1}
+        alt="topdec"
       />
       <img 
-      className='mrfresh'
-      src={mrfresh}
-      alt="mrfresh"
+        className='mrfresh'
+        src={mrfresh}
+        alt="mrfresh"
       />
       <div className="dashboard">
         <div className="graph">
@@ -22,7 +34,15 @@ const Dashboard = () => {
           <div className="widgets">
             <div className="widget">
               <h2>Graph</h2>
-              <p>Content for Widget 1</p>
+              {data && (
+                <div>
+                  {/* Render the retrieved data */}
+                  <p>Water Consumed: {data[0].waterConsumed} ml</p>
+                  <p>Time Recorded: {new Date(data[0].timeRecorded * 1000).toLocaleString()}</p>
+                  <p>User ID: {data[0].userID}</p>
+                  {/* Add more fields as needed */}
+                </div>
+              )}
             </div>
           </div>
         </div>
