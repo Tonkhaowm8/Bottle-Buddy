@@ -1,0 +1,71 @@
+body {
+    background-color: #C5EFFD; /* Adjusted background color for the entire page */
+    margin: 0;
+    padding: 0;
+  }
+  
+.profile {
+    position: relative;
+    margin-top: -15%;
+}
+.dec {
+    z-index: 0;
+}
+
+.topdec2 {
+    width: 110%;
+}
+
+.mrfreshprof {
+    margin-top: -25%;
+}
+
+.logout {
+    position: absolute;
+    top: 4%; /* Adjust as needed */
+    right: 8%; /* Adjust as needed */
+    width: 12%; /* Adjust the size as needed */
+    z-index: 1;
+}
+
+.mrFreshText {
+    font-size: 30px;
+    margin-top: 0%;
+}
+
+.preference {
+    width: 110%;
+}
+
+.colours {
+    font-size: 20px;
+    margin-right: 60%
+}
+
+.pie-buttons {
+    display: flex;
+    justify-content: space-around;
+    width: 300px;
+    margin: 20px auto;
+}
+
+.pie-button {
+    width: 80px;
+    height: 85px;
+    border: none;
+    border-radius: 50%;
+    background-color: transparent;
+    margin: 0 10px; /* Add margin to create space between buttons */
+}
+
+.red {
+    background-color: red;
+}
+
+.blue {
+    background-color: blue;
+}
+
+.green {
+    background-color: green;
+}
