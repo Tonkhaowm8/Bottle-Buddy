@@ -8,11 +8,13 @@ import { fetchData } from '../../routes'; // Import fetchData function
 import { atob } from 'atob'; // Import atob for decoding base64
 
 const Dashboard = () => {
+  const [data, setData] = useState(null);
   const [editingGoals, setEditingGoals] = useState(false);
   const [mlPerDay, setMlPerDay] = useState(2000);
   const [drinkFreq, setDrinkFreq] = useState(9);
-  const [data, setData] = useState(null);
-
+  const [currDrinkFreq, setCurrDrinkFreq] = useState(0);
+  const [totalWaterDrank, setTotalWaterDrank] = useState(0);
+  
   useEffect(() => {
     const fetchAndSetData = async () => {
       const result = await fetchData();
@@ -21,6 +23,17 @@ const Dashboard = () => {
 
     fetchAndSetData();
   }, []);
+
+  useEffect(() => {
+    if (data) {
+      // Calculate total water drank
+      const total = data.reduce((acc, item) => acc + item.waterConsumed, 0);
+      setTotalWaterDrank(total);
+
+      // Set current drink frequency
+      setCurrDrinkFreq(data.length);
+    }
+  }, [data]);
 
   useEffect(() => {
     const extractAndDecodeIdToken = () => {
@@ -127,9 +140,11 @@ const Dashboard = () => {
         <div className="graph">
           <h1 className='graphtitle'>ML to Time</h1>
           <div className="widgets">
+          <h3>{date}</h3>
             <div className="widget">
-              <h3>{date}</h3>
-              {data && <Line data={chartData} options={options} />} {/* Display the line chart with time at bottom */}
+              <div className='graph'>
+                {data && <Line data={chartData} options={options} />} {/* Display the line chart with time at bottom */}
+              </div>
             </div>
           </div>
         </div>
@@ -157,8 +172,8 @@ const Dashboard = () => {
           </div>
           <div className="widget current">
             <h2>Current</h2>
-            <p><strong>1000 ml</strong> ml Per Day</p>
-            <p><strong>4</strong> Drink Freq</p>
+            <p><strong>{totalWaterDrank} ml</strong> ml Drank Today</p>
+            <p><strong>{currDrinkFreq}</strong> Drink Freq</p>
           </div>
         </div>
       </div>

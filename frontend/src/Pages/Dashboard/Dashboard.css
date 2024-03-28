@@ -18,6 +18,7 @@ body {
 .widgets {
   flex-wrap: wrap;
   justify-content: space-between;
+  height: 100%;
 }
 
 .widget {
@@ -28,9 +29,17 @@ body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
   height: 100%;
-  width: 100%;
+  width: 90%;
   margin-top: -5%;
   display:flexbox;
+  position: relative;
+}
+
+.graph {
+  flex: 1; /* Take up remaining space */
+  background-color: #D3EEF2;
+  margin-right: 10px; /* Adjust margin as needed */
+  position: relative; /* Add position relative */
 }
 
 .goal {
@@ -46,6 +55,7 @@ body {
 }
 
 .widget-container {
+  
   padding-top: 15px;
   display: flex;
 }
