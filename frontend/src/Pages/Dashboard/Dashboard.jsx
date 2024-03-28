@@ -8,6 +8,9 @@ import { fetchData } from '../../routes'; // Import fetchData function
 import { atob } from 'atob'; // Import atob for decoding base64
 
 const Dashboard = () => {
+  const [editingGoals, setEditingGoals] = useState(false);
+  const [mlPerDay, setMlPerDay] = useState(2000);
+  const [drinkFreq, setDrinkFreq] = useState(9);
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -80,6 +83,24 @@ const Dashboard = () => {
   // Get the date
   const date = data ? new Date(data[0].timeRecorded * 1000).toLocaleDateString() : '';
 
+  const toggleEditingGoals = () => {
+    setEditingGoals(!editingGoals);
+  };
+
+  const handleMlPerDayChange = (event) => {
+    setMlPerDay(parseInt(event.target.value));
+  };
+
+  const handleDrinkFreqChange = (event) => {
+    setDrinkFreq(parseInt(event.target.value));
+  };
+
+  const handleGoalSubmit = () => {
+    // Handle goal submission logic here (e.g., update backend with new goals)
+    console.log("Updated goals - ml per day:", mlPerDay, "Drink freq:", drinkFreq);
+    toggleEditingGoals(); // Toggle editing mode after submission
+  };
+
   // Chart options to display time at bottom
   const options = {
     scales: {
@@ -114,10 +135,25 @@ const Dashboard = () => {
         </div>
         <p className="heading">Personal Goals</p>
         <div className="widget-container">
-          <div className="widget goal">
+        <div className="widget goal">
             <h2>Goals</h2>
-            <p><strong>2000 ml</strong> ml Per Day</p>
-            <p><strong>9</strong> Drink Freq</p>
+            {editingGoals ? (
+              <>
+                <label htmlFor="mlPerDay">ML per Day:</label>
+                <input type="number" id="mlPerDay" value={mlPerDay} onChange={handleMlPerDayChange} />
+                <br />
+                <label htmlFor="drinkFreq">Drink Frequency:</label>
+                <input type="number" id="drinkFreq" value={drinkFreq} onChange={handleDrinkFreqChange} />
+                <br />
+                <button onClick={handleGoalSubmit}>Submit</button>
+              </>
+            ) : (
+              <>
+                <p><strong>{mlPerDay} ml</strong> ml Per Day</p>
+                <p><strong>{drinkFreq}</strong> Drink Freq</p>
+                <button onClick={toggleEditingGoals}>Edit</button>
+              </>
+            )}
           </div>
           <div className="widget current">
             <h2>Current</h2>

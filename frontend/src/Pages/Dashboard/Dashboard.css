@@ -6,7 +6,7 @@ body {
 
 .dashboard {
   position: relative;
-  margin-top: -15%;
+  margin-top: 5%;
 }
 
 .graph {
@@ -16,7 +16,6 @@ body {
 }
 
 .widgets {
-  display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 }
@@ -31,6 +30,7 @@ body {
   height: 100%;
   width: 100%;
   margin-top: -5%;
+  display:flexbox;
 }
 
 .goal {
@@ -46,6 +46,7 @@ body {
 }
 
 .widget-container {
+  padding-top: 15px;
   display: flex;
 }
 
@@ -54,7 +55,7 @@ body {
 }
 
 .topdec {
-  width: 100%;
+  width: 110%;
   height: 20%;
   position: relative;
   display: flex;
