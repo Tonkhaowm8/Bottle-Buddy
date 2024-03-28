@@ -5,6 +5,7 @@ import './Dashboard.css';
 import topdec1 from '../../img/topdec1.png';
 import mrfresh from '../../img/mrfresh.png';
 import { fetchData } from '../../routes'; // Import fetchData function
+import { atob } from 'atob'; // Import atob for decoding base64
 
 const Dashboard = () => {
   const [data, setData] = useState(null);
@@ -17,6 +18,47 @@ const Dashboard = () => {
 
     fetchAndSetData();
   }, []);
+
+  useEffect(() => {
+    const extractAndDecodeIdToken = () => {
+      const cookies = document.cookie.split(';');
+      let idToken = null;
+    
+      // Iterate through each cookie to find the one containing the id_token
+      cookies.forEach(cookie => {
+        const [name, value] = cookie.trim().split('=');
+        if (name === 'id_token') { // Assuming 'id_token' is the name of the cookie
+          idToken = value; // Assign the token value to idToken
+        }
+      });
+    
+      if (idToken) {
+        try {
+          const tokenParts = idToken.split('.');
+          if (tokenParts.length === 3) {
+            const decodedToken = JSON.parse(window.atob(tokenParts[1])); // Decode the payload and parse as JSON
+            return decodedToken;
+          } else {
+            console.error('Invalid JWT format:', idToken);
+            return null; // Return null if JWT has invalid format
+          }
+        } catch (error) {
+          console.error('Error decoding JWT:', error);
+          return null; // Return null if decoding fails
+        }
+      } else {
+        console.error('id_token not found in cookies');
+        return null; // Return null if id_token not found
+      }
+    };
+  
+    const idTokenData = extractAndDecodeIdToken();
+    console.log('Decoded id_token:', idTokenData);
+  
+    // Extracting the username
+    const userID = idTokenData ? idTokenData['cognito:username'] : null;
+    console.log('UserID:', userID);
+  }, [data]);
 
   // Prepare data for chart
   const chartData = {
