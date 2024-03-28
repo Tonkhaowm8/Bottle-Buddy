@@ -12,6 +12,7 @@ body {
 .graph {
   margin: 20px;
   background-color: #D3EEF2;
+
 }
 
 .widgets {
@@ -27,6 +28,9 @@ body {
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
+  height: 100%;
+  width: 100%;
+  margin-top: -5%;
 }
 
 .goal {
@@ -67,4 +71,8 @@ body {
   z-index: 1;
   margin-left: 25%;
   margin-top: -30%;
+}
+
+.graphtitle{
+  padding-top: 10%;
 }

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import Chart from "chart.js/auto"; // Importing the Chart.js library
+import { Line } from 'react-chartjs-2';
 import './Dashboard.css';
 import topdec1 from '../../img/topdec1.png';
 import mrfresh from '../../img/mrfresh.png';
@@ -16,6 +18,36 @@ const Dashboard = () => {
     fetchAndSetData();
   }, []);
 
+  // Prepare data for chart
+  const chartData = {
+    labels: data ? data.map(item => new Date(item.timeRecorded * 1000).toLocaleDateString()) : [], // Display only date
+    datasets: [
+      {
+        label: 'Water Consumed (ml)',
+        data: data ? data.map(item => item.waterConsumed) : [],
+        fill: false,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1
+      }
+    ]
+  };
+
+  // Extract time for display on the graph
+  const times = data ? data.map(item => new Date(item.timeRecorded * 1000).toLocaleTimeString()) : [];
+
+  // Get the date
+  const date = data ? new Date(data[0].timeRecorded * 1000).toLocaleDateString() : '';
+
+  // Chart options to display time at bottom
+  const options = {
+    scales: {
+      x: {
+        type: 'category',
+        labels: times
+      }
+    }
+  };
+
   return (
     <div className='body'>
       <img 
@@ -30,19 +62,11 @@ const Dashboard = () => {
       />
       <div className="dashboard">
         <div className="graph">
-          <h1>ML to Time</h1>
+          <h1 className='graphtitle'>ML to Time</h1>
           <div className="widgets">
             <div className="widget">
-              <h2>Graph</h2>
-              {data && (
-                <div>
-                  {/* Render the retrieved data */}
-                  <p>Water Consumed: {data[0].waterConsumed} ml</p>
-                  <p>Time Recorded: {new Date(data[0].timeRecorded * 1000).toLocaleString()}</p>
-                  <p>User ID: {data[0].userID}</p>
-                  {/* Add more fields as needed */}
-                </div>
-              )}
+              <h3>{date}</h3>
+              {data && <Line data={chartData} options={options} />} {/* Display the line chart with time at bottom */}
             </div>
           </div>
         </div>
