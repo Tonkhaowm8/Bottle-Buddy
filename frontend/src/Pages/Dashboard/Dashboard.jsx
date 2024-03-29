@@ -4,8 +4,10 @@ import { Line } from 'react-chartjs-2';
 import './Dashboard.css';
 import topdec1 from '../../img/topdec1.png';
 import mrfresh from '../../img/mrfresh.png';
-import { fetchData } from '../../routes'; // Import fetchData function
+import { fetchData } from '../../db'; // Import fetchData function
 import { atob } from 'atob'; // Import atob for decoding base64
+import { Link } from 'react-router-dom'; // Import Link from React Router
+
 
 const Dashboard = () => {
   const [data, setData] = useState(null);
@@ -18,7 +20,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchAndSetData = async () => {
       const result = await fetchData();
-      setData(result);
+      setData(result); 
     };
 
     fetchAndSetData();
@@ -131,11 +133,13 @@ const Dashboard = () => {
         src={topdec1}
         alt="topdec"
       />
+      <Link to="/profile">
       <img 
         className='mrfresh'
         src={mrfresh}
         alt="mrfresh"
       />
+      </Link>
       <div className="dashboard">
         <div className="graph">
           <h1 className='graphtitle'>ML to Time</h1>
@@ -151,24 +155,24 @@ const Dashboard = () => {
         <p className="heading">Personal Goals</p>
         <div className="widget-container">
         <div className="widget goal">
-            <h2>Goals</h2>
-            {editingGoals ? (
-              <>
-                <label htmlFor="mlPerDay">ML per Day:</label>
-                <input type="number" id="mlPerDay" value={mlPerDay} onChange={handleMlPerDayChange} />
-                <br />
-                <label htmlFor="drinkFreq">Drink Frequency:</label>
-                <input type="number" id="drinkFreq" value={drinkFreq} onChange={handleDrinkFreqChange} />
-                <br />
-                <button onClick={handleGoalSubmit}>Submit</button>
-              </>
-            ) : (
-              <>
-                <p><strong>{mlPerDay} ml</strong> ml Per Day</p>
-                <p><strong>{drinkFreq}</strong> Drink Freq</p>
-                <button onClick={toggleEditingGoals}>Edit</button>
-              </>
-            )}
+          <h2>Goals</h2>
+          {editingGoals ? (
+            <>
+              <label htmlFor="mlPerDay">ML per Day:</label>
+              <input type="number" id="mlPerDay" value={mlPerDay} onChange={handleMlPerDayChange} />
+              <br />
+              <label htmlFor="drinkFreq">Drink Frequency:</label>
+              <input type="number" id="drinkFreq" value={drinkFreq} onChange={handleDrinkFreqChange} />
+              <br />
+              <button onClick={handleGoalSubmit}>Submit</button>
+            </>
+          ) : (
+            <>
+              <p><strong>{mlPerDay} ml</strong> ml Per Day</p>
+              <p><strong>{drinkFreq}</strong> Drink Freq</p>
+              <button onClick={toggleEditingGoals}>Edit</button>
+            </>
+          )}
           </div>
           <div className="widget current">
             <h2>Current</h2>
