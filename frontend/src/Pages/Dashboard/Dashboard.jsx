@@ -8,7 +8,6 @@ import { fetchData } from '../../db'; // Import fetchData function
 import { atob } from 'atob'; // Import atob for decoding base64
 import { Link } from 'react-router-dom'; // Import Link from React Router
 
-
 const Dashboard = () => {
   const [data, setData] = useState(null);
   const [editingGoals, setEditingGoals] = useState(false);
@@ -16,7 +15,9 @@ const Dashboard = () => {
   const [drinkFreq, setDrinkFreq] = useState(9);
   const [currDrinkFreq, setCurrDrinkFreq] = useState(0);
   const [totalWaterDrank, setTotalWaterDrank] = useState(0);
-  
+  const [userID, setUserID] = useState(null); // Define userID state
+  const [redirect, setRedirect] = useState(false); // State to handle redirection
+
   useEffect(() => {
     const fetchAndSetData = async () => {
       const result = await fetchData();
@@ -47,6 +48,7 @@ const Dashboard = () => {
         const [name, value] = cookie.trim().split('=');
         if (name === 'id_token') { // Assuming 'id_token' is the name of the cookie
           idToken = value; // Assign the token value to idToken
+          console.log(idToken)
         }
       });
     
@@ -55,7 +57,10 @@ const Dashboard = () => {
           const tokenParts = idToken.split('.');
           if (tokenParts.length === 3) {
             const decodedToken = JSON.parse(window.atob(tokenParts[1])); // Decode the payload and parse as JSON
-            return decodedToken;
+    
+            // Assuming the real name is stored as a custom attribute in Cognito
+            const realName = decodedToken['custom:name'] || null;
+            return { ...decodedToken, realName }; // Add realName to the returned object
           } else {
             console.error('Invalid JWT format:', idToken);
             return null; // Return null if JWT has invalid format
@@ -66,16 +71,22 @@ const Dashboard = () => {
         }
       } else {
         console.error('id_token not found in cookies');
+        setRedirect(true); // Set redirect to true if id_token is not found
         return null; // Return null if id_token not found
       }
     };
-  
+    
     const idTokenData = extractAndDecodeIdToken();
     console.log('Decoded id_token:', idTokenData);
-  
+    
     // Extracting the username
-    const userID = idTokenData ? idTokenData['cognito:username'] : null;
-    console.log('UserID:', userID);
+    const userIDFromToken = idTokenData ? idTokenData['cognito:username'] : null;
+    console.log('UserID:', userIDFromToken);
+    
+    // Extracting the real name
+    const realNameFromToken = idTokenData ? idTokenData.realName : null;
+    console.log('Real Name:', realNameFromToken);
+    setUserID(userIDFromToken); // Set userID state    
   }, [data]);
 
   // Prepare data for chart
@@ -110,11 +121,30 @@ const Dashboard = () => {
     setDrinkFreq(parseInt(event.target.value));
   };
 
-  const handleGoalSubmit = () => {
-    // Handle goal submission logic here (e.g., update backend with new goals)
-    console.log("Updated goals - ml per day:", mlPerDay, "Drink freq:", drinkFreq);
-    toggleEditingGoals(); // Toggle editing mode after submission
-  };
+  const handleGoalSubmit = async () => {
+    const data = { "userID": userID, "newGoal": mlPerDay }; // Assuming mlPerDay is defined somewhere
+
+    try {
+        const response = await fetch('https://o1v3i2l5tk.execute-api.ap-southeast-1.amazonaws.com/user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        console.log('Goal submitted successfully!');
+        toggleEditingGoals(); // Toggle editing mode after submission
+    } catch (error) {
+        console.error('Error submitting goal:', error);
+        // Handle error appropriately (e.g., show error message to the user)
+    }
+};
+
 
   // Chart options to display time at bottom
   const options = {
@@ -125,6 +155,12 @@ const Dashboard = () => {
       }
     }
   };
+
+  // Redirect if necessary
+  if (redirect) {
+    window.location.href = "/signin";
+    return null;
+  }
 
   return (
     <div className='body'>
