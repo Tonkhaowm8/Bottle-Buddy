@@ -33,8 +33,13 @@ const Profile = () => {
 
   // Function to check if cookie exists
   const checkCookie = () => {
-    // Implement logic to check if the cookie exists
-    // Return true if cookie exists, false otherwise
+    
+    if (document.cookie){
+        return true;
+    } else {
+        return false;
+    }
+
   };
 
   // Function to redirect to Cognito login
