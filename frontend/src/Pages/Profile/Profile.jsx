@@ -4,6 +4,9 @@ import topdec2 from '../../img/dectop2.png';
 import mrfreshprof from '../../img/mrfreshprof.png';
 import logout from '../../img/logout.png';
 import preference from '../../img/preference.png';
+import backarrow from '../../img/backarrow.png';
+import { Link } from 'react-router-dom'; // Import Link from React Router
+
 
 const Profile = () => {
   return (
@@ -14,6 +17,13 @@ const Profile = () => {
                 src={topdec2}
                 alt="topdec2"
             />
+            <Link to="/dashboard">
+                <img 
+                    className='backarrow'
+                    src={backarrow}
+                    alt="backarrow"
+                />
+            </Link>
         </div>
         <img 
             className='logout'
@@ -33,12 +43,12 @@ const Profile = () => {
             src={preference}
             alt="preference"
         />
-        <p className="colours"><strong>LED Colours</strong></p>
+        {/* <p className="colours"><strong>LED Colours</strong></p>
         <div className="pie-buttons">
             <button className="pie-button red"></button>
             <button className="pie-button blue"></button>
             <button className="pie-button green"></button>
-        </div>
+        </div> */}
     </div>
   );
 };

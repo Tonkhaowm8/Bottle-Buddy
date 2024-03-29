@@ -16,8 +16,7 @@ router.post('/user', async (req, res) => {
         // If the operation is successful, prepare data for the API endpoint
         const postData = {
             mlPerDay: mlPerDay,
-            drinkFreq: drinkFreq,
-            text: hi
+            drinkFreq: drinkFreq
             // Add other required data properties here
         };
 

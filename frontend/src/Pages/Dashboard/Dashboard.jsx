@@ -133,6 +133,10 @@ const Dashboard = () => {
         src={topdec1}
         alt="topdec"
       />
+      <div className='greet'>
+        <h1 className='welcome'>Welcome</h1>
+        <h1 className='hello-name'>Mr.Fresh</h1>
+      </div>
       <Link to="/profile">
       <img 
         className='mrfresh'

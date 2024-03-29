@@ -6,7 +6,7 @@ body {
   
 .profile {
     position: relative;
-    margin-top: -15%;
+    margin-top: -30%;
 }
 .dec {
     z-index: 0;
@@ -68,4 +68,17 @@ body {
 
 .green {
     background-color: green;
+}
+
+.backarrow{
+    width: 10%;
+    height: 5%;
+    position: absolute;
+    margin-left: -43%;
+    margin-top: -45%;
+
+}
+
+.profilecontainer{
+    margin-top: 5%;
 }
