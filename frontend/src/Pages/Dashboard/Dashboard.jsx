@@ -25,7 +25,7 @@ const Dashboard = () => {
     };
 
     fetchAndSetData();
-  }, []);
+  }, []); // Trigger useEffect when refresh state changes
 
   useEffect(() => {
     if (data) {
@@ -87,7 +87,7 @@ const Dashboard = () => {
     const realNameFromToken = idTokenData ? idTokenData.realName : null;
     console.log('Real Name:', realNameFromToken);
     setUserID(userIDFromToken); // Set userID state    
-  }, [data]);
+  }, []); // Trigger useEffect when refresh state changes
 
   // Prepare data for chart
   const chartData = {
@@ -125,26 +125,25 @@ const Dashboard = () => {
     const data = { "userID": userID, "newGoal": mlPerDay }; // Assuming mlPerDay is defined somewhere
 
     try {
-        const response = await fetch('https://o1v3i2l5tk.execute-api.ap-southeast-1.amazonaws.com/user', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
+      const response = await fetch('https://o1v3i2l5tk.execute-api.ap-southeast-1.amazonaws.com/user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
 
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
 
-        console.log('Goal submitted successfully!');
-        toggleEditingGoals(); // Toggle editing mode after submission
+      console.log('Goal submitted successfully!');
+      toggleEditingGoals(); // Toggle editing mode after submission
     } catch (error) {
-        console.error('Error submitting goal:', error);
-        // Handle error appropriately (e.g., show error message to the user)
+      console.error('Error submitting goal:', error);
+      // Handle error appropriately (e.g., show error message to the user)
     }
-};
-
+  };
 
   // Chart options to display time at bottom
   const options = {
@@ -155,6 +154,11 @@ const Dashboard = () => {
       }
     }
   };
+
+  // Function to refresh everything
+  //const refreshData = () => {
+  //  setRefresh(Date.now());
+  //};
 
   // Redirect if necessary
   if (redirect) {
