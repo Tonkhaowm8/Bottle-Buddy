@@ -280,7 +280,6 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <button onClick={refreshData}>Refresh Data</button> {/* Button to trigger data refresh */}
     </div>
   );
 };
