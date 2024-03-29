@@ -16,7 +16,9 @@ const Dashboard = () => {
   const [currDrinkFreq, setCurrDrinkFreq] = useState(0);
   const [totalWaterDrank, setTotalWaterDrank] = useState(0);
   const [userID, setUserID] = useState(null); // Define userID state
+  var userIDv;
   const [redirect, setRedirect] = useState(false); // State to handle redirection
+  const [stage, setStage] = useState(1); // State for stages
 
   useEffect(() => {
     const fetchAndSetData = async () => {
@@ -81,6 +83,7 @@ const Dashboard = () => {
     
     // Extracting the username
     const userIDFromToken = idTokenData ? idTokenData['cognito:username'] : null;
+    userIDv = userIDFromToken;
     console.log('UserID:', userIDFromToken);
     
     // Extracting the real name
@@ -88,6 +91,53 @@ const Dashboard = () => {
     console.log('Real Name:', realNameFromToken);
     setUserID(userIDFromToken); // Set userID state    
   }, []); // Trigger useEffect when refresh state changes
+
+  useEffect(() => {
+    const checkStage = async () => {
+      try {
+        const response = await fetch('https://f88n0wpvx1.execute-api.ap-southeast-1.amazonaws.com/update');
+        if (response.ok) {
+          setStage(2); // Change stage to 2 if response is successful
+          console.log("hello")
+        }
+      } catch (error) {
+        console.error('Error checking stage:', error);
+      }
+    };
+
+    checkStage();
+  }, []); // Trigger useEffect when refresh state changes
+
+  useEffect(() => {
+
+    const socketWeb = `wss://61i9jp0vq6.execute-api.ap-southeast-1.amazonaws.com/production?userID=${userIDv}`
+    // Create WebSocket connection
+    const socket = new WebSocket(socketWeb);
+    
+    // Connection opened
+    socket.addEventListener('open', (event) => {
+      console.log('WebSocket connected');
+    });
+    
+    // Listen for messages
+    socket.addEventListener('message', (event) => {
+      console.log('Message from server:', event.data);
+      refreshData();
+      // Handle incoming WebSocket messages here
+    });
+    
+    // Error handling
+    socket.addEventListener('error', (error) => {
+      console.error('WebSocket error:', error);
+      // Handle WebSocket errors here
+    });
+    
+    // Cleanup function to close WebSocket connection when component unmounts
+    return () => {
+      console.log('Closing WebSocket connection');
+      socket.close();
+    };
+  }, []); // Trigger once on component mount
 
   // Prepare data for chart
   const chartData = {
@@ -155,10 +205,15 @@ const Dashboard = () => {
     }
   };
 
-  // Function to refresh everything
-  //const refreshData = () => {
-  //  setRefresh(Date.now());
-  //};
+  const refreshData = async () => {
+    try {
+      const result = await fetchData();
+      setData(result);
+    } catch (error) {
+      console.error('Error refreshing data:', error);
+      // Handle error appropriately (e.g., show error message to the user)
+    }
+  };
 
   // Redirect if necessary
   if (redirect) {
@@ -225,6 +280,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      <button onClick={refreshData}>Refresh Data</button> {/* Button to trigger data refresh */}
     </div>
   );
 };
