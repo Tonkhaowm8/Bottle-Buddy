@@ -5,6 +5,7 @@ import Dashboard from './Pages/Dashboard/Dashboard';
 import Profile from './Pages/Profile/Profile';
 import Signin from './Pages/Signin/signin';
 import Signout from './Pages/Signout/signout';
+import './messaging_init_in_sw';
 
 const App = () => {
   return (
