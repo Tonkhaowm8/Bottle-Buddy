@@ -8,6 +8,7 @@ import { fetchData } from '../../db'; // Import fetchData function
 import { atob } from 'atob'; // Import atob for decoding base64
 import { Link } from 'react-router-dom'; // Import Link from React Router
 
+
 const Dashboard = () => {
   const [data, setData] = useState(null);
   const [editingGoals, setEditingGoals] = useState(false);
@@ -231,7 +232,7 @@ const Dashboard = () => {
       />
       <div className='greet'>
         <h1 className='welcome'>Welcome</h1>
-        <h1 className='hello-name'>Mr.Fresh</h1>
+        <h1 className='hello-name'>{userID}</h1>
       </div>
       <Link to="/profile">
       <img 

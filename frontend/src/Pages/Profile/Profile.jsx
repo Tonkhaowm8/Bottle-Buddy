@@ -7,8 +7,8 @@ import preference from '../../img/preference.png';
 import backarrow from '../../img/backarrow.png';
 import { Link } from 'react-router-dom'; // Import Link from React Router
 
-const Profile = () => {
-  
+const Profile = ({ userID }) => { // Accept userID as a prop
+
   // Logout handler function
   const handleLogout = () => {
     const clientId = '7o199gv9aniv573gaa1fofb30h'; // Replace this with your actual client ID
@@ -77,7 +77,7 @@ const Profile = () => {
           src={mrfreshprof}
           alt="mrfreshprof"
         />
-        <p className="mrFreshText"><strong>Mr. Fresh</strong></p>
+        <p className="mrFreshText"><strong>{userID}</strong></p> {/* Display userID */}
       </div>
       <img 
         className='preference'
