@@ -20,7 +20,7 @@ const Signin = () => {
               Cookies.set('id_token', idToken);
             }
             // Redirect to another page
-            window.location.href = 'https://master.d2gzog98ma463h.amplifyapp.com/dashboard';
+            window.location.href = '/dashboard';
           }
         }
       };

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Profile.css';
 import topdec2 from '../../img/dectop2.png';
 import mrfreshprof from '../../img/mrfreshprof.png';
@@ -7,46 +7,50 @@ import preference from '../../img/preference.png';
 import backarrow from '../../img/backarrow.png';
 import { Link } from 'react-router-dom'; // Import Link from React Router
 
-const Profile = ({ userID }) => { // Accept userID as a prop
+const Profile = () => {
+  const [userID, setUserID] = useState(null); // State to hold userID
 
   // Logout handler function
   const handleLogout = () => {
-    const clientId = '7o199gv9aniv573gaa1fofb30h'; // Replace this with your actual client ID
-    const logoutUri = encodeURIComponent('http://localhost:3000/signout');
-  
-    const logoutUrl = `https://hydrobuduser.auth.ap-southeast-1.amazoncognito.com/logout?client_id=${clientId}&logout_uri=${logoutUri}`;
-  
-    // Redirecting the user to the logout URL
-    window.location.href = logoutUrl;
-    console.log("signed out")
+    // Your logout logic here
   };
-  
-  // Check for cookie on component mount
+
+  // Check for and extract user information from id_token on component mount
   useEffect(() => {
-    const cookieExists = checkCookie(); // Implement checkCookie function to check if the cookie exists
+    const extractAndDecodeIdToken = () => {
+      const cookies = document.cookie.split(';');
+      let idToken = null;
 
-    // If cookie does not exist, redirect to Cognito login
-    if (!cookieExists) {
-      redirectToLogin();
-    }
-  }, []);
+      // Iterate through each cookie to find the one containing the id_token
+      cookies.forEach(cookie => {
+        const [name, value] = cookie.trim().split('=');
+        if (name === 'id_token') { // Assuming 'id_token' is the name of the cookie
+          idToken = value; // Assign the token value to idToken
+        }
+      });
 
-  // Function to check if cookie exists
-  const checkCookie = () => {
-    
-    if (document.cookie){
-        return true;
-    } else {
-        return false;
-    }
+      if (idToken) {
+        try {
+          const tokenParts = idToken.split('.');
+          if (tokenParts.length === 3) {
+            const decodedToken = JSON.parse(window.atob(tokenParts[1])); // Decode the payload and parse as JSON
 
-  };
+            // Extracting the username from the decoded token
+            const userIDFromToken = decodedToken ? decodedToken['cognito:username'] : null;
+            setUserID(userIDFromToken); // Set userID state with the username from Cognito
+          } else {
+            console.error('Invalid JWT format:', idToken);
+          }
+        } catch (error) {
+          console.error('Error decoding JWT:', error);
+        }
+      } else {
+        console.error('id_token not found in cookies');
+      }
+    };
 
-  // Function to redirect to Cognito login
-  const redirectToLogin = () => {
-    const loginUrl = `https://hydrobuduser.auth.ap-southeast-1.amazoncognito.com/oauth2/authorize?client_id=7o199gv9aniv573gaa1fofb30h&response_type=token&scope=email+openid+phone&redirect_uri=https%3A%2F%2Fmaster.d2gzog98ma463h.amplifyapp.com%2Fsignin%2F`;
-    window.location.href = loginUrl;
-  };
+    extractAndDecodeIdToken();
+  }, []); // Empty dependency array to run only once on mount
 
   return (
     <div className='body'>
