@@ -5,7 +5,6 @@ import './Dashboard.css';
 import topdec1 from '../../img/topdec1.png';
 import mrfresh from '../../img/mrfresh.png';
 import { fetchData } from '../../db'; // Import fetchData function
-import { atob } from 'atob'; // Import atob for decoding base64
 import { Link } from 'react-router-dom'; // Import Link from React Router
 
 
@@ -93,13 +92,34 @@ const Dashboard = () => {
     setUserID(userIDFromToken); // Set userID state    
   }, []); // Trigger useEffect when refresh state changes
 
+  // Fetch mlPerDay value when component mounts
+  useEffect(() => {
+    const fetchMlPerDay = async () => {
+      try {
+        const resp = await fetch(`https://o1v3i2l5tk.execute-api.ap-southeast-1.amazonaws.com/user/${userIDv}`); // Adjust URL as needed
+        const dat = await resp.json();
+        console.log(dat[0].freq);
+        setMlPerDay(dat[0].goal);
+        setDrinkFreq(dat[0].freq);
+      } catch (error) {
+        console.error('Error fetching mlPerDay:', error);
+      }
+    };
+
+    fetchMlPerDay();
+
+    // Clean-up function (optional)
+    return () => {
+      // Cleanup logic if needed
+    };
+  }, []); // Empty dependency array to ensure it runs only once on mount
+
   useEffect(() => {
     const checkStage = async () => {
       try {
         const response = await fetch('https://f88n0wpvx1.execute-api.ap-southeast-1.amazonaws.com/update');
         if (response.ok) {
           setStage(2); // Change stage to 2 if response is successful
-          console.log("hello")
         }
       } catch (error) {
         console.error('Error checking stage:', error);
@@ -173,7 +193,7 @@ const Dashboard = () => {
   };
 
   const handleGoalSubmit = async () => {
-    const data = { "userID": userID, "newGoal": mlPerDay }; // Assuming mlPerDay is defined somewhere
+    const data = { "userID": userID, "newGoal": mlPerDay, "freq": drinkFreq }; // Assuming mlPerDay is defined somewhere
 
     try {
       const response = await fetch('https://o1v3i2l5tk.execute-api.ap-southeast-1.amazonaws.com/user', {
