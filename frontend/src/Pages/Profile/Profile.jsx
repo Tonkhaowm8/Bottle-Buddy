@@ -5,6 +5,8 @@ import mrfreshprof from '../../img/mrfreshprof.png';
 import logoutIcon from '../../img/logout.png';
 import preference from '../../img/preference.png';
 import backarrow from '../../img/backarrow.png';
+import speaker_off from '../../img/speaker_off.png';
+import speaker_on from '../../img/speaker_on.png';
 import { Link } from 'react-router-dom'; // Import Link from React Router
 
 const Profile = () => {
@@ -88,6 +90,18 @@ const Profile = () => {
         src={preference}
         alt="preference"
       />
+      <div className= 'speakercontain'>
+      <img 
+        className='speaker_on'
+        src={speaker_on}
+        alt="speaker_on"
+      />
+      <img 
+        className='speaker_off'
+        src={speaker_off}
+        alt="speaker_off"
+      />
+      </div>
     </div>
   );
 };

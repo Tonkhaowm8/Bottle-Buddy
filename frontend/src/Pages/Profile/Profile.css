@@ -82,3 +82,19 @@ body {
 .profilecontainer{
     margin-top: 5%;
 }
+
+.speakercontain{
+    position: relative;
+    margin-top: 10%;
+  }
+  
+.speaker_on{
+    height: 20%;
+    width: 20%;
+    margin-right: 30%
+}
+
+.speaker_off{
+    height: 20%;
+    width: 20%;
+}
