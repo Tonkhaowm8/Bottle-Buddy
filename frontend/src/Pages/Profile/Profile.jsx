@@ -15,14 +15,15 @@ const Profile = () => {
   const handleLogout = () => {
     // Replace this with your actual client ID
     const clientId = '7o199gv9aniv573gaa1fofb30h'; 
-    const logoutUri = encodeURIComponent('http://localhost:3000/signout');
-
+    const logoutUri = encodeURIComponent('https://master.d2gzog98ma463h.amplifyapp.com/signout');
+  
     const logoutUrl = `https://hydrobuduser.auth.ap-southeast-1.amazoncognito.com/logout?client_id=${clientId}&logout_uri=${logoutUri}`;
-
+  
     // Redirecting the user to the logout URL
     window.location.href = logoutUrl;
     console.log("signed out");
   };
+  
 
   // Function to check if cookie exists
   const checkCookie = () => {
