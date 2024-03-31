@@ -54,6 +54,55 @@ const Profile = () => {
     extractAndDecodeIdToken();
   }, []); // Empty dependency array to run only once on mount
 
+  // Handle sound on
+  const handleSoundOn = async () => {
+    const data = { "sound": "On" }; // Assuming mlPerDay is defined somewhere
+
+    try {
+      const response = await fetch('https://tr7zuzh1o1.execute-api.ap-southeast-1.amazonaws.com/sound', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      console.log('Sound turned on successfully!');
+    } catch (error) {
+      console.error('Error turning sound on:', error);
+      // Handle error appropriately (e.g., show error message to the user)
+    }
+  };
+
+  // Handle sound off
+  const handleSoundOff = async () => {
+    const data = { "sound": "Off" }; // Assuming mlPerDay is defined somewhere
+
+    try {
+      const response = await fetch('https://tr7zuzh1o1.execute-api.ap-southeast-1.amazonaws.com/sound', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      console.log('Sound turned off successfully!');
+    } catch (error) {
+      console.error('Error turning sound off:', error);
+      // Handle error appropriately (e.g., show error message to the user)
+    }
+  };
+
+
   return (
     <div className='body'>
       <div className='dec'>
@@ -95,11 +144,13 @@ const Profile = () => {
         className='speaker_on'
         src={speaker_on}
         alt="speaker_on"
+        onClick={handleSoundOn}
       />
       <img 
         className='speaker_off'
         src={speaker_off}
         alt="speaker_off"
+        onClick={handleSoundOff}
       />
       </div>
     </div>
