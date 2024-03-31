@@ -218,7 +218,7 @@ const Dashboard = () => {
 
   // Redirect if necessary
   if (redirect) {
-    const loginUrl = `https://hydrobuduser.auth.ap-southeast-1.amazoncognito.com/oauth2/authorize?client_id=7o199gv9aniv573gaa1fofb30h&response_type=token&scope=email+openid+phone&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fsignin%2F`;
+    const loginUrl = `https://hydrobuduser.auth.ap-southeast-1.amazoncognito.com/oauth2/authorize?client_id=7o199gv9aniv573gaa1fofb30h&response_type=token&scope=email+openid+phone&redirect_uri=https%3A%2F%2Fmaster.d2gzog98ma463h.amplifyapp.com%2Fsignin%2F`;
     window.location.href = loginUrl;
     return null;
   }
