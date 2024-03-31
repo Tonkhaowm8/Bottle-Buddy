@@ -116,3 +116,56 @@ body {
 .heading{
   color: darkslategray;
 }
+
+/* Dashboard.css */
+
+@keyframes glitter {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+.glitter-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999; /* Ensure it appears above other content */
+}
+
+.glitter {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #fff;
+  border-radius: 50%;
+  animation: glitter 2s linear infinite; /* Change 2s to adjust duration */
+}
+
+.drink-goal {
+  /* Your default styling */
+  color: darkslategray;
+}
+
+.drink-goal.exceeded {
+  color: green; /* Change color to green when exceeded */
+}
+
+.drink-freq {
+  /* Your default styling */
+  color: darkslategray;
+}
+
+.drink-freq.exceeded {
+  color: green; /* Change color to green when exceeded */
+}

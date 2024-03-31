@@ -7,18 +7,18 @@ import mrfresh from '../../img/mrfresh.png';
 import { fetchData } from '../../db'; // Import fetchData function
 import { Link } from 'react-router-dom'; // Import Link from React Router
 
-
 const Dashboard = () => {
   const [data, setData] = useState(null);
   const [editingGoals, setEditingGoals] = useState(false);
-  const [mlPerDay, setMlPerDay] = useState(2000);
-  const [drinkFreq, setDrinkFreq] = useState(9);
+  const [mlPerDay, setMlPerDay] = useState(null);
+  const [drinkFreq, setDrinkFreq] = useState(null);
   const [currDrinkFreq, setCurrDrinkFreq] = useState(0);
   const [totalWaterDrank, setTotalWaterDrank] = useState(0);
   const [userID, setUserID] = useState(null); // Define userID state
   var userIDv;
   const [redirect, setRedirect] = useState(false); // State to handle redirection
   const [stage, setStage] = useState(1); // State for stages
+  const [celebration, setCelebration] = useState(false);
 
   useEffect(() => {
     const fetchAndSetData = async () => {
@@ -28,17 +28,6 @@ const Dashboard = () => {
 
     fetchAndSetData();
   }, []); // Trigger useEffect when refresh state changes
-
-  useEffect(() => {
-    if (data) {
-      // Calculate total water drank
-      const total = data.reduce((acc, item) => acc + item.waterConsumed, 0);
-      setTotalWaterDrank(total);
-
-      // Set current drink frequency
-      setCurrDrinkFreq(data.length);
-    }
-  }, [data]);
 
   useEffect(() => {
     const extractAndDecodeIdToken = () => {
@@ -113,6 +102,25 @@ const Dashboard = () => {
       // Cleanup logic if needed
     };
   }, []); // Empty dependency array to ensure it runs only once on mount
+
+  useEffect(() => {
+    if (data) {
+      // Calculate total water drank
+      const total = data.reduce((acc, item) => acc + item.waterConsumed, 0);
+      setTotalWaterDrank(total);
+      
+      if (total >= mlPerDay) {
+        setCelebration(true);
+        setTimeout(() => {
+          setCelebration(false);
+        }, 1000); // Revert celebration effect after 1 second
+      }
+
+      // Set current drink frequency
+      setCurrDrinkFreq(data.length);
+      
+    }
+  }, [data]);
 
   useEffect(() => {
     const checkStage = async () => {
@@ -255,17 +263,17 @@ const Dashboard = () => {
         <h1 className='hello-name'>{userID}</h1>
       </div>
       <Link to="/profile">
-      <img 
-        className='mrfresh'
-        src={mrfresh}
-        alt="mrfresh"
-      />
+        <img 
+          className='mrfresh'
+          src={mrfresh}
+          alt="mrfresh"
+        />
       </Link>
       <div className="dashboard">
         <div className="graph">
           <h1 className='graphtitle'>ML to Time</h1>
           <div className="widgets">
-          <h3>{date}</h3>
+            <h3>{date}</h3>
             <div className="widget">
               <div className='graph'>
                 {data && <Line data={chartData} options={options} />} {/* Display the line chart with time at bottom */}
@@ -275,33 +283,48 @@ const Dashboard = () => {
         </div>
         <p className="heading">Personal Goals</p>
         <div className="widget-container">
-        <div className="widget goal">
-          <h2>Goals</h2>
-          {editingGoals ? (
-            <>
-              <label htmlFor="mlPerDay">ML per Day:</label>
-              <input type="number" id="mlPerDay" value={mlPerDay} onChange={handleMlPerDayChange} />
-              <br />
-              <label htmlFor="drinkFreq">Drink Frequency:</label>
-              <input type="number" id="drinkFreq" value={drinkFreq} onChange={handleDrinkFreqChange} />
-              <br />
-              <button onClick={handleGoalSubmit}>Submit</button>
-            </>
-          ) : (
-            <>
-              <p><strong>{mlPerDay} ml</strong> ml Per Day</p>
-              <p><strong>{drinkFreq}</strong> Drink Freq</p>
-              <button onClick={toggleEditingGoals}>Edit</button>
-            </>
-          )}
+          <div className="widget goal">
+            <h2>Goals</h2>
+            {editingGoals ? (
+              <>
+                <label htmlFor="mlPerDay">ML per Day:</label>
+                <input type="number" id="mlPerDay" value={mlPerDay} onChange={handleMlPerDayChange} />
+                <br />
+                <label htmlFor="drinkFreq">Drink Frequency:</label>
+                <input type="number" id="drinkFreq" value={drinkFreq} onChange={handleDrinkFreqChange} />
+                <br />
+                <button onClick={handleGoalSubmit}>Submit</button>
+              </>
+            ) : (
+              <>
+                <p><strong>{mlPerDay}</strong> ml Per Day</p>
+                <p><strong>{drinkFreq}</strong> Drink Freq</p>
+                <button onClick={toggleEditingGoals}>Edit</button>
+              </>
+            )}
           </div>
           <div className="widget current">
             <h2>Current</h2>
-            <p><strong>{totalWaterDrank} ml</strong> ml Drank Today</p>
-            <p><strong>{currDrinkFreq}</strong> Drink Freq</p>
+            <p className={`drink-goal ${totalWaterDrank >= mlPerDay ? 'exceeded' : ''}`}><strong>{totalWaterDrank}</strong> ml Drank Today</p>
+            <p className={`drink-freq ${currDrinkFreq >= drinkFreq ? 'exceeded' : ''}`}><strong>{currDrinkFreq}</strong> Drink Freq</p>
           </div>
         </div>
       </div>
+      {celebration && (
+        <div className="glitter-container">
+          {[...Array(30)].map((_, index) => (
+            <div
+              key={index}
+              className="glitter"
+              style={{
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 2}s`
+              }}
+            ></div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
